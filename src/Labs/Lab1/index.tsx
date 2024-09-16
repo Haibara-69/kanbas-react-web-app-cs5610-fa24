@@ -162,10 +162,12 @@ tag to tell browsers to render the gaps.
         <br />
         Loading a local image:
         <br />
-        <img id="wd-teslabot" src="images/teslabot.jpg" alt="Teslabot" height="200px />
+        <img id="wd-teslabot" src="images/teslabot.jpg" alt="Teslabot" height="200px" />
         </div>
+        
 
         <div id="wd-forms">
+    
             <h4>Form Elements</h4>
             <form id="wd-text-fields">
                 <h5>Text Fields</h5>
