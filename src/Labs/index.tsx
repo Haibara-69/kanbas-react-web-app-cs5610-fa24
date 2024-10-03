@@ -17,7 +17,7 @@ export default function Labs() {
       <div>
         <a
           id="wd-github"
-          href="https://github.com/Haibara-69/kanbas-react-web-app-cs5610-fa24/tree/a1"
+          href="https://github.com/Haibara-69/kanbas-react-web-app-cs5610-fa24/tree/a2"
           target="_blank"
           rel="noopener noreferrer"
         >
