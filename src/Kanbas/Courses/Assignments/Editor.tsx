@@ -6,10 +6,6 @@ export default function AssignmentEditor() {
   const assignments = db.assignments;
   const courseAssignments = assignments.filter(assignment => assignment.course === cid); // Filter assignments by course
   const assignment = courseAssignments.find(assign => assign._id === aid); // Find the specific assignment
-    
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
 
   return (
       <div id="wd-assignments-editor" className="container" style={{ width: '700px', margin: '0 auto', marginLeft: '20px'}}>
