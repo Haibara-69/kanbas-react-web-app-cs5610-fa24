@@ -31,10 +31,9 @@ export default function Assignments() {
               <div className="d-flex align-items-center">
               <BsGripVertical className="me-3 fs-3" style={{ marginLeft: '-5px' }}/>
               <span>
-                <a className="wd-assignment-link" href={`"#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
-                >
-                  {assignment._id}
-                </a><br />
+                <a className="wd-assignment-link" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                      {assignment._id}
+                    </a><br />
                 <span className="text-danger"> Multiple Modules</span> | <b>Not available until</b> {assignment.startTime} |<br />
               <b>Due</b> {assignment.dueTime} | 100pts <br />
             </span>  
