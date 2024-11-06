@@ -110,7 +110,7 @@ export default function Dashboard({
                                             <button id="wd-edit-course-click"
                                                     onClick={(event) => {
                                                         event.preventDefault();
-                                                        event.stopPropagation();
+                                                        event.stopPropagation();  
                                                         setCourse(course);
                                                     }}
                                                     className="btn btn-warning me-2 float-end">
