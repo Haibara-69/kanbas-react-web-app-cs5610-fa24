@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, deleteAssignment as deleteAssignmentAction, updateAssignment as updateAssignmentAction } from "./reducer";
+import { setAssignments, addAssignment, deleteAssignment as deleteAssignmentAction, updateAssignment as updateAssignmentAction } from "./reducer";
 
 import { FaCaretDown } from "react-icons/fa";
 import { BsGripVertical } from 'react-icons/bs';
@@ -8,6 +9,8 @@ import AssignmentsControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButton";
 import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import { useParams  } from "react-router-dom";
+import * as coursesClient from "../client";
+import * as assignmentClient from "./client";
 
 export default function Assignments() {  
   const { cid } = useParams();
@@ -15,24 +18,89 @@ export default function Assignments() {
   const [editingAssignmentId, setEditingAssignmentId] = useState<string | null>(null);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer); 
+  
+  const saveAssignment = async (assignment: any) => {
+    await assignmentClient.updateAssignment(assignment);
+    dispatch(updateAssignmentAction(assignment));
+  };
+
+  const fetchAssignments = async () => {
+    const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  // const createAssignmentForCourse = async () => {
+  //   if (!cid) return;
+  //   const newAssignment = { name: assignmentName, course: cid };
+  //   const assignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+  //   dispatch(addAssignment(assignment));
+  // };
+
+  // const addNewAssignment = async () => {
+  //   if (!cid) return;  // Ensure course ID and name are set
+  
+  //   const newAssignment = { 
+  //     name: assignmentName, 
+  //     course: cid 
+  //   };
+
+  const addNewAssignment = async () => {
+    if (!cid) return; // Ensure course ID is set
+  
+    const newAssignment = {
+      title: assignmentName || "Untitled Assignment",
+      course: cid,
+      points: 100, // Default points
+      availableFrom: "Not specified", // Default available date
+      dueDate: "No due date", // Default due date
+      group: "ASSIGNMENT1", // Default group
+    };
+  
+    try {
+      // Call API to create the assignment
+      const assignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+  
+      // Dispatch action to add the created assignment to Redux store
+      if (assignment) {
+        dispatch(addAssignment(assignment));
+        setAssignmentName(""); // Clear input field
+        console.log("New assignment added:", assignment); // Debug log
+      }
+    } catch (error) {
+      console.error("Error creating assignment:", error);
+    }
+  };
+  
+  
+
+  const removeAssignment = async (assignmentId: string) => {
+    await assignmentClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignmentAction(assignmentId));
+  };
+
+  
+
 
   const assignments = useSelector((state: any) => state.assignmentsReducer.assignments);
   const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
 
-  const addNewAssignment = () => {
-    if (!assignmentName.trim()) return;
-    const newAssignment = {
-      _id: new Date().getTime().toString(),
-      title: assignmentName,
-      course: cid,
-      lessons: [],
-      points: Number,
-      availableFrom: '2024-05-13',
-      dueDate: '2024-5-20',
-    };
-    dispatch(addAssignment(newAssignment)); // Dispatch addAssignment action
-    setAssignmentName("");
-  };
+  // const addNewAssignment = () => {
+  //   if (!assignmentName.trim()) return;
+  //   const newAssignment = {
+  //     _id: new Date().getTime().toString(),
+  //     title: assignmentName,
+  //     course: cid,
+  //     lessons: [],
+  //     points: Number,
+  //     availableFrom: '2024-05-13',
+  //     dueDate: '2024-5-20',
+  //   };
+  //   dispatch(addAssignment(newAssignment)); // Dispatch addAssignment action
+  //   setAssignmentName("");
+  // };
 
   const deleteAssignment = (assignmentId: string) => {
     dispatch(deleteAssignmentAction(assignmentId)); // Dispatch deleteAssignment action
@@ -102,7 +170,7 @@ export default function Assignments() {
               {courseAssignments.length > 0 && ( 
               <AssignmentControlButtons
               assignmentId={assignment._id}
-              deleteAssignment={deleteAssignment}
+              deleteAssignment={(assignmentId) => removeAssignment(assignmentId)}
               /> 
             )}
             </li>

@@ -19,6 +19,7 @@ export default function CoursesNavigation() {
     <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0">
       {links.map((link) => {
         const isActive = pathname.includes(link.path); 
+        
         return (
           <Link
             key={link.path}

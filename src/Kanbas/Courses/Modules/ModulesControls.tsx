@@ -29,7 +29,10 @@ export default function ModulesControls(
           Publish All</button> 
         <ul className="dropdown-menu">
           <li>
-            <a id="wd-publish-all-modules-and-items-btn" className="dropdown-item" href="#">
+            <a id="wd-publish-all-modules-and-items-btn" 
+            className="dropdown-item" href="#"
+          
+            >
               <GreenCheckmark />
               Publish all modules and items</a>
           </li>
