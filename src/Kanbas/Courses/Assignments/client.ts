@@ -11,6 +11,7 @@ export const deleteAssignment = async (assignmentId: string) => {
  const response = await axios.delete(`${ASSIGNMENT_API}/${assignmentId}`);
  return response.data;
 };
+
 export const createAssignment = async (assignment: any) => {
     try {
       // Send POST request to the server to create a new assignment

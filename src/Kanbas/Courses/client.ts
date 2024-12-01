@@ -68,6 +68,7 @@ export const updateCourse = async (course: any) => {
     const { data } = await axios.put(`${COURSES_API}/${course._id}`, course);
     return data;
   };
+  
 export const createCourse = async (course: any) => {
     try {
       const response = await axios.post(COURSES_API, course); // Assuming POST endpoint exists
