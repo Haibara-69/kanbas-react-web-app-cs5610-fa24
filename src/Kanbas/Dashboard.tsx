@@ -417,7 +417,7 @@ export default function Dashboard({
     };
 
     const handleNavigate = (courseId: string) => {
-        if (enrolledCourses.includes(courseId)) {
+        if (enrolledCourses.includes(courseId) || currentUser?.role === "ADMIN") {
             navigate(`/Kanbas/Courses/${courseId}/Home`);
         } else {
             alert("You need to enroll in this course to view its content.");
@@ -456,15 +456,25 @@ export default function Dashboard({
     
     
 
+    // const displayedCourses =
+    // currentUser?.role === "FACULTY"
+    //     ? courses.filter((course) =>
+    //           newCourseIds.includes(course._id) || enrolledCourses.includes(course._id)
+    //       ) // Faculty sees courses they created or are enrolled in
+    //     : showAllCourses
+    //     ? courses // Students see all courses when toggled
+    //     : courses.filter((course) => enrolledCourses.includes(course._id)); // Students see only their enrolled courses
+
     const displayedCourses =
-    currentUser?.role === "FACULTY"
+    currentUser?.role === "ADMIN"
+        ? courses // Admin sees all courses
+        : currentUser?.role === "FACULTY"
         ? courses.filter((course) =>
               newCourseIds.includes(course._id) || enrolledCourses.includes(course._id)
           ) // Faculty sees courses they created or are enrolled in
         : showAllCourses
         ? courses // Students see all courses when toggled
         : courses.filter((course) => enrolledCourses.includes(course._id)); // Students see only their enrolled courses
-
 
 
     return (
